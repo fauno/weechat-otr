@@ -1697,14 +1697,22 @@ def otr_statusbar_cb(data, item, window):
         logged_str = config_string('look.bar.state.logged')
         notlogged_str = config_string('look.bar.state.notlogged')
 
+        # Remove all localvars
+        localvars = [ 'fingerprint', 'encrypted', 'verified', 'notlogged' ]
+        for localvar in localvars:
+          weechat.buffer_set(buf, ''.join(['localvar_del_otr_',localvar]), '')
+
         bar_parts = []
 
         if context.is_encrypted():
+            weechat.buffer_set(buf, 'localvar_set_otr_fingerprint',
+              potr.human_hash(context.crypto.theirPubkey.cfingerprint()))
             if encrypted_str:
                 bar_parts.append(''.join([
                             config_color('status.encrypted'),
                             encrypted_str,
                             config_color('status.default')]))
+                weechat.buffer_set(buf, 'localvar_set_otr_encrypted', 'on')
 
             if context.is_verified():
                 if authenticated_str:
@@ -1712,6 +1720,7 @@ def otr_statusbar_cb(data, item, window):
                                 config_color('status.authenticated'),
                                 authenticated_str,
                                 config_color('status.default')]))
+                weechat.buffer_set(buf, 'localvar_set_otr_verified', 'on')
             elif unauthenticated_str:
                 bar_parts.append(''.join([
                             config_color('status.unauthenticated'),
@@ -1729,6 +1738,7 @@ def otr_statusbar_cb(data, item, window):
                             config_color('status.notlogged'),
                             notlogged_str,
                             config_color('status.default')]))
+                weechat.buffer_set(buf, 'localvar_set_otr_not_logged', 'on')
 
         elif unencrypted_str:
             bar_parts.append(''.join([
