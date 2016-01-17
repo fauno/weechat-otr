@@ -1,0 +1,32 @@
+<html>
+
+<head>
+<title>weechat-otr Release Signatures</title>
+</head>
+
+<body>
+
+<h1>weechat-otr Release Signatures</h1>
+
+<p>Import the public key</p>
+
+<pre>
+curl https://s3.amazonaws.com/matthewm.boedicker.org/matthewm@boedicker.org_pgp_public_key.txt | gpg --import
+</pre>
+
+<p>Verify the key fingerprint</p>
+
+<pre>
+gpg --fingerprint matthewm@boedicker.org
+dig +short txt matthewm._pka.boedicker.org
+</pre>
+
+Download <a href="https://s3.amazonaws.com/weechat-otr-signatures/1.8.0.asc">1.8.0.asc</a>
+
+<pre>
+gpg --verify 1.8.0.asc ~/.weechat/python/otr.py
+</pre>
+
+</body>
+
+</html>
